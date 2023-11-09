@@ -4,6 +4,16 @@ import './globals.css'
 import { ApplicationContextProvider } from './context/AuthContext'
 import { UserHeaderWrapper } from './components/UserHeaderWrapper/UserHeaderWrapper'
 
+// import { config } from '@fortawesome/fontawesome';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+// import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
+// config({
+//   autoAddCss: true,
+//   useFontAwesomeIcons: false,
+// });
+
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {

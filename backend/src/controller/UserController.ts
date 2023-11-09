@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 import { User } from "../entity/User"
 import { AppDataSource } from '../data-source';
+import { randomUUID } from 'crypto';
 
 
 class UserController {
-
-
     static create = async (request: Request, response: Response, next: NextFunction) => {
         const { name, user, password } = request.body
         try {
             const subject = new User();
+            subject.id = randomUUID();
             subject.name = name
             subject.user = user
             subject.password = password

@@ -1,9 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToMany, PrimaryColumn } from "typeorm"
+import { Project } from "./Project"
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn({ name: "id_usu" })
-    id: number
+
+    @PrimaryColumn({ name: "id_usu", type: "uuid" })
+    id: string
 
     @Column({ name: "name_usu" })
     name: string
@@ -13,4 +15,5 @@ export class User {
 
     @Column({ name: "password_usu" })
     password: string
+
 }

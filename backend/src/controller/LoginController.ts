@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { User } from "../entity/User"
 import { AppDataSource } from '../data-source';
 import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from '../../const';
 
 
 class LoginController {
@@ -21,8 +22,8 @@ class LoginController {
                 return;
             }
 
-            const secretKey = 'your-secret-key';
-            const token = jwt.sign({ userId: userLogged.id, username: userLogged.user }, secretKey);
+
+            const token = jwt.sign({ userId: userLogged.id, username: userLogged.user }, JWT_SECRET);
 
             response.send({ token });
 

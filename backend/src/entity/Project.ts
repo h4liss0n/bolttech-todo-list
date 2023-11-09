@@ -1,11 +1,27 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable, ManyToOne, JoinColumn, PrimaryColumn } from "typeorm"
+import { User } from "./User";
+import { Task } from "./Task";
+
 
 @Entity()
 export class Project {
-    @PrimaryGeneratedColumn({ name: "id_pro" })
-    id: number
+
+    @PrimaryColumn({ name: "id_pro", type: "uuid" })
+    id: string
 
     @Column({ name: "name_pro" })
     name: string
+
+
+    @ManyToMany(() => User)
+    @JoinTable()
+    users: User[]
+
+    @ManyToMany(() => Task)
+    @JoinTable()
+    tasks: Task[]
+
+
+
 
 }

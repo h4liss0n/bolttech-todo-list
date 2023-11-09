@@ -37,12 +37,14 @@ export const ApplicationContextProvider: React.FC<Props> = ({ children }) => {
     const actionLogin = (token: string) => {
         const decode = jwt.decode(token)
         if (typeof decode === "object" && decode) {
+            localStorage.setItem("token", token);
             const name = decode["username"]
             setState((prev) => ({ ...prev, name: name, token: token, isLoggedIn: true }))
         }
     }
 
     const actionLogout = () => {
+        localStorage.setItem("token", "");
         setState(initialState)
     }
 
