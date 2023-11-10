@@ -17,7 +17,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({ user, isLoggedIn, onLogin, onLo
     return (
         <div className="bg-blue-500 py-4 text-white flex justify-between items-center p-10 mb-10">
             <div>
-                <Image src={Avatar} alt={`${user.name}'s avatar`} className="w-16 h-16 rounded-full" />
+                {/* <Image src={Avatar} alt={`${user.name}'s avatar`} className="w-16 h-16 rounded-full" /> */}
                 <h1 className="text-2xl font-bold mt-2">{user.name}</h1>
             </div>
             <div>

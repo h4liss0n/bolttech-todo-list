@@ -3,7 +3,7 @@ import { Project, ProjectBase, ProjectCard } from "../model/ProjectModel";
 export class ProjectServiceApi {
 
 
-    static async getAll(): Promise<Project[]> {
+    static async getAll(): Promise<ProjectCard[]> {
         const token = localStorage.getItem("token");
 
 
@@ -16,7 +16,7 @@ export class ProjectServiceApi {
         };
 
         const res = await fetch("http://localhost:8080/api/v1/project", requestOptions);
-        const result = (await res.json()) as Project[];
+        const result = (await res.json()) as ProjectCard[];
         return result;
     }
 
@@ -58,7 +58,7 @@ export class ProjectServiceApi {
         return json;
     }
 
-    static async delete(id: number) {
+    static async delete(projectId: string) {
 
         const token = localStorage.getItem("token");
 
@@ -70,7 +70,7 @@ export class ProjectServiceApi {
             },
         };
         return await fetch(
-            `http://localhost:8080/api/v1/project/${id}`,
+            `http://localhost:8080/api/v1/project/${projectId}`,
             requestOptions,
         );
     }

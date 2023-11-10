@@ -14,11 +14,13 @@ export class Task {
     @Column({ name: "done_task" })
     done: boolean
 
-
-    @OneToOne(() => Project)
-    @JoinColumn()
+    @ManyToOne(() => Project, (project) => project.id,
+        {
+            nullable: false,
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE"
+        })
+    @JoinColumn({ name: "project_id_task" })
     project: Project
-
-
 
 }

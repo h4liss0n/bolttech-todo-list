@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from "react"
 import { ProjectServiceApi } from "../service/ProjectService"
-import { Project } from "../model/ProjectModel"
+import { Project, ProjectCard } from "../model/ProjectModel"
 import { ProjectCreateButton } from "./fragment/ProjectCreateButton"
 import { CardProject } from "./fragment/ProjectCard"
 import { useRouter } from "next/navigation"
+import { TaskService } from "../service/TaskService"
 
 
 interface ProjectBoardProps {
@@ -11,14 +12,16 @@ interface ProjectBoardProps {
 }
 
 export const ProjectBoard: React.FC<ProjectBoardProps> = ({ isLoggedIn }) => {
-    const [projects, setProjects] = useState<Project[]>([])
+    const [projects, setProjects] = useState<ProjectCard[]>([])
     const router = useRouter()
 
 
 
     const getData = useCallback(async () => {
         const data = await ProjectServiceApi.getAll()
-        setProjects(data)
+        if (data) {
+            setProjects(data)
+        }
     }, [])
 
     useEffect(() => {
@@ -30,13 +33,22 @@ export const ProjectBoard: React.FC<ProjectBoardProps> = ({ isLoggedIn }) => {
 
 
 
-    const handleDelete = async (id: number) => {
-        await ProjectServiceApi.delete(id)
+    const handleDelete = async (projectId: string) => {
+        await ProjectServiceApi.delete(projectId)
         await getData()
     }
 
-    const handleEdit = async (id: number) => {
-        router.push(`/project/${id}`)
+    const handleEdit = async (projectId: string) => {
+        router.push(`/project/${projectId}`)
+    }
+
+    const handleAddTask = async (projectId: string) => {
+        router.push(`/project/${projectId}/task`)
+    }
+
+    const handleUpdateTaskState = async (taskId: string, status: boolean) => {
+        await TaskService.updateStatus(taskId, status)
+        getData()
     }
 
     if (!isLoggedIn) {
@@ -52,11 +64,12 @@ export const ProjectBoard: React.FC<ProjectBoardProps> = ({ isLoggedIn }) => {
                         key={project.id}
                         id={project.id}
                         name={project.name}
-                        users={[]}
-                        tasks={[]}
+                        users={project.users}
+                        tasks={project.tasks}
                         onDelete={handleDelete}
                         onEdit={handleEdit}
-
+                        onAdd={handleAddTask}
+                        onUpdateTaskState={handleUpdateTaskState}
                     />)
                 )}
             </div>

@@ -1,5 +1,5 @@
 "use client"
-import { ReactNode, createContext, useState } from "react"
+import { ReactNode, createContext, useCallback, useState } from "react"
 import jwt from 'jsonwebtoken';
 
 export interface ApplicationContextType {
@@ -28,25 +28,39 @@ interface Props {
 
 
 export const ApplicationContextProvider: React.FC<Props> = ({ children }) => {
-    const [state, setState] = useState<ApplicationContextType>(initialState)
 
-    const setName = (value: string) => {
-        setState((prev) => ({ ...prev, name: value }))
-    }
-
-    const actionLogin = (token: string) => {
+    const hydratedFormToken = (token: string) => {
         const decode = jwt.decode(token)
         if (typeof decode === "object" && decode) {
-            localStorage.setItem("token", token);
             const name = decode["username"]
-            setState((prev) => ({ ...prev, name: name, token: token, isLoggedIn: true }))
+            return {
+                name: name,
+                token: token,
+                isLoggedIn: true
+            }
         }
     }
 
-    const actionLogout = () => {
-        localStorage.setItem("token", "");
+
+    const [state, setState] = useState<ApplicationContextType>(initialState)
+
+    const actionLogin = useCallback((token: string) => {
+        localStorage.setItem("token", token)
+        const tokenInfo = hydratedFormToken(token)
+        if (tokenInfo) {
+            setState((prev) => ({
+                ...prev,
+                name: tokenInfo.name,
+                token: tokenInfo.token,
+                isLoggedIn: true
+            }))
+        }
+    }, [setState])
+
+    const actionLogout = useCallback(() => {
+        localStorage.removeItem("token")
         setState(initialState)
-    }
+    }, [setState])
 
     return (
         <>

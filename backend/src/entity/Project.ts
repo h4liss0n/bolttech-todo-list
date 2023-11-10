@@ -17,11 +17,8 @@ export class Project {
     @JoinTable()
     users: User[]
 
-    @ManyToMany(() => Task)
-    @JoinTable()
+
+    @OneToMany(() => Task, (task) => task.project)
     tasks: Task[]
-
-
-
 
 }

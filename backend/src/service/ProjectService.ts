@@ -16,7 +16,16 @@ class ProjectService {
                         id: userId
                     }
                 },
-                relations: { users: true, tasks: true }
+                relations: {
+                    users: true,
+                    tasks: true
+                },
+                select: {
+                    users: { id: true, name: true },
+                    tasks: { id: true, description: true, done: true },
+
+                }
+
             })
 
         return projects;
@@ -34,11 +43,13 @@ class ProjectService {
                 },
                 relations: {
                     users: true,
-                    tasks: true,
+                    tasks: true
+
                 },
                 select: {
                     users: { id: true, name: true },
-                    tasks: { id: true, description: true }
+                    tasks: { id: true, description: true, done: true },
+
                 }
             })
 
